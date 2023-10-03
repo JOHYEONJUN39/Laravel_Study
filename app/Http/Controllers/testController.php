@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Test;
 use Illuminate\Support\Facades\DB;
 
-class testController extends Controller
+class TestController extends Controller
 {
     public function index() {
 
