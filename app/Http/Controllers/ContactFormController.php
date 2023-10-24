@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\ContactForm;
 use App\Services\CheckFormService;
 use App\Http\Requests\StoreContactRequest;
+use Illuminate\Support\Facades\Auth;
 
 class ContactFormController extends Controller
 {
@@ -20,7 +21,9 @@ class ContactFormController extends Controller
 
         $search = $request->search;
         $query = ContactForm::search($search);
-        
+        // contacts가 desc로 정렬
+        $query->orderBy('created_at', 'desc');
+
         $contacts = $query->select('id', 'name', 'title', 'created_at')
         ->paginate(20);
 
@@ -48,9 +51,10 @@ class ContactFormController extends Controller
     public function store(StoreContactRequest $request)
     {
         ContactForm::create([
-            'name' => $request->name,
+            'name' => Auth::user()->name,
             'title' => $request->title,
-            'email' => $request->email,
+            'email' => Auth::user()->email,
+            'language' => $request->language,
             'url' => $request->url,
             'gender' => $request->gender,
             'age' => $request->age,
@@ -101,9 +105,8 @@ class ContactFormController extends Controller
     {
         $contact = ContactForm::find($id);
         // Form에 들어있는 정보를 DB에 업데이트 (덮어쓰기)
-        $contact->name = $request->name;
         $contact->title = $request->title;
-        $contact->email = $request->email;
+        $contact->language = $request->language;
         $contact->url = $request->url;
         $contact->gender = $request->gender;
         $contact->age = $request->age;
