@@ -18,16 +18,14 @@ class ContactFormController extends Controller
     public function index(Request $request)
     {  
         
-
         $search = $request->search;
         $query = ContactForm::search($search);
+        $query->where('solution', 0);
         // contacts가 desc로 정렬
         $query->orderBy('created_at', 'desc');
 
         $contacts = $query->select('id', 'name', 'title', 'created_at')
         ->paginate(20);
-
-
         
         return view('contacts.index', compact('contacts'));
     }
@@ -59,6 +57,8 @@ class ContactFormController extends Controller
             'gender' => $request->gender,
             'age' => $request->age,
             'contact' => $request->contact,
+            'solution' => 0,
+            'solutionist' => '',
         ]);
         return to_route('contacts.index');
     }
@@ -72,10 +72,8 @@ class ContactFormController extends Controller
     public function show($id)
     {
         $contact = ContactForm::find($id);
-
         $gender = CheckFormService::checkGender($contact);
-
-        $age = CheckFormService::chckAge($contact);
+        $age = CheckFormService::checkAge($contact);
 
         return view('contacts.show',
         compact('contact', 'gender', 'age'));
