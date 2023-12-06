@@ -7,6 +7,7 @@ use App\Http\Controllers\ContactFormController;
 use App\Http\Controllers\SolutionController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\CommentController;
 
 
 /*
@@ -41,7 +42,7 @@ Route::prefix('contacts')
     Route::get('/{id}', 'show')->name('show');
     Route::get('/{id}/edit', 'edit')->name('edit');
     Route::post('/{id}', 'update')->name('update');
-    Route::post('/{id}/destroy', 'destroy')->name('destroy');
+    Route::delete('/{id}/destroy', 'destroy')->name('destroy');
 });
 
 Route::prefix('solution')
@@ -54,6 +55,8 @@ Route::prefix('solution')
     Route::post('/', 'store')->name('store');
     Route::get('/{id}', 'show')->name('show');
 });
+
+Route::post('/contact-forms/{contactForm}/comments', [CommentController::class, 'store']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
