@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Comment;
 
 class ContactForm extends Model
 {
@@ -21,6 +22,12 @@ class ContactForm extends Model
         'solution',
         'solutionist'
     ];
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'contact_id');
+    }
+
 
     public function scopeSearch($query, $search) {
         if ($search !== null) {
