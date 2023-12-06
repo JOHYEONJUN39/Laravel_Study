@@ -1,7 +1,7 @@
 <x-app-layout>
   <x-slot name="header">
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-          문의 게시판
+          질문 게시판
       </h2>
   </x-slot>
 
