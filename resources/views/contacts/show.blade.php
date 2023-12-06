@@ -26,12 +26,37 @@
                 </div>
                 <div class="pt-4">
                     @if(auth()->user()->email != $contact->email)
-                    <a href="{{ route('solution.create', ['id'=>$contact->id])}}" class="text-green-600 hover:text-blue-800">해결하기</a>
+                    <form class="mb-6" method="POST" action="/contact-forms/{{ $contact->id }}/comments">
+                        @csrf
+                        <div class="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+                            <label for="comment" class="sr-only">Your comment</label>
+                            <textarea id="content" name="content" rows="6"
+                                class="px-0 w-full text-s text-blue-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
+                                placeholder="도와주세요!" required></textarea>
+                        </div>
+                        <button type="submit"
+                            class="inline-flex items-center py-2.5 px-4 text- font-medium text-center text-white bg-blue-600 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">
+                            솔루션 제공
+                        </button>
+                    </form>
                     @endif
                     @if(auth()->user()->email == $contact->email)
                     <a href="{{ route('contacts.edit', ['id' => $contact->id ])}}" class="text-blue-600 hover:text-blue-800">편집</a>
                     <a href="#" data-id="{{ $contact->id }}" onClick="deletePost(this)" class="text-red-600 hover:text-red-800 ml-4">삭제</a>
+                    <form id="delete_{{ $contact->id }}" action="{{ route('contacts.destroy', $contact->id) }}" method="POST" style="display: none;">
+                        @csrf
+                        @method('DELETE')
+                    </form>      
                     @endif
+                    <div class="mt-6">
+                        @foreach($contact->comments as $comment)
+                            <div class="mb-4 rounded-lg p-4 border border-gray-200 bg-blue-100">
+                                <p class="text-xl text-blue-900 font-extrabold">유저명: {{ $comment->user->name }}</p>
+                                <p class="text-lg text-blue-900">{{ $comment->content }}</p>
+                                <p class="text-s">{{ $comment->created_at->format('Y-m-d H:i') }}</p>
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
             </div>
         </div>
