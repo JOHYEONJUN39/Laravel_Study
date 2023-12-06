@@ -17,6 +17,9 @@ class ContactForm extends Model
         'gender',
         'age',
         'contact',
+        'language',
+        'solution',
+        'solutionist'
     ];
 
     public function scopeSearch($query, $search) {
