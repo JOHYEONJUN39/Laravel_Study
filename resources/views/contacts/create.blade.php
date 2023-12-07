@@ -16,28 +16,40 @@
                     <div class="container px-5 mx-auto">
                       <div class="lg:w-1/2 md:w-2/3 mx-auto">
                         <div class="-m-2">
-                          {{-- <div class="p-2 w-full">
-                            <div class="relative">
-                              <label for="name" class="leading-7 text-sm text-gray-600">작성자</label>
-                              <input type="text" id="name" name="name" value="{{ old('name') }}" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                            </div>
-                          </div> --}}
-
                           <div class="p-2 w-full">
                             <div class="relative">
-                              <label for="title" class="leading-7 text-sm text-gray-600">제목</label>
+                              <label for="title" class="leading-7 text-sm text-gray-600">제목 *</label>
                               <input type="text" id="title" name="title" value="{{ old('title') }}" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                             </div>
                           </div>
                           
                           <div class="p-2 w-full">
-                            <div class="relative">
-                              <label for="language" class="leading-7 text-sm text-gray-600">사용언어</label>
-                              <input type="text" id="language" name="language" value="{{ old('language') }}" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                            </div>
+                              <div class="relative">
+                                <label for="language" class="leading-7 text-sm text-gray-600">사용언어 *</label>
+                                <select id="language" name="language" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" onchange="showOtherLanguageField()">
+                                    <option value="JavaScript">JavaScript</option>
+                                    <option value="TypeScript">TypeScript</option>
+                                    <option value="Python">Python</option>
+                                    <option value="Java">Java</option>
+                                    <option value="C#">C#</option>
+                                    <option value="C++">C++</option>
+                                    <option value="PHP">PHP</option>
+                                    <option value="Ruby">Ruby</option>
+                                    <option value="Swift">Swift</option>
+                                    <option value="Kotlin">Kotlin</option>
+                                    <option value="Go">Go</option>
+                                    <option value="Rust">Rust</option>
+                                    <option value="Dart">Dart</option>
+                                    <option value="Objective-C">Objective-C</option>
+                                    <option value="Shell">Shell</option>
+                                    <option value="C">C</option>
+                                    <option value="">기타</option>
+                                </select>
+                                
+                                <input type="text" id="otherLanguage" name="otherLanguage" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" style="display: none;">
+                              </div>
                           </div>
-
-
+                        
                           <div class="p-2 w-full">
                             <div class="relative">
                               <label for="url" class="leading-7 text-sm text-gray-600">참고 페이지</label>
@@ -47,7 +59,7 @@
 
                           <div class="p-2 w-full">
                             <div class="relative">
-                              <label class="leading-7 text-sm text-gray-600">성별</label>
+                              <label class="leading-7 text-sm text-gray-600">성별 *</label>
                               <br>
                               <input type="radio" name="gender" value="0" {{ old('gender') == 0 ? 'checked' : '' }} >남성
                               <input type="radio" name="gender" value="1" {{ old('gender') == 1 ? 'checked' : '' }}>여성
@@ -56,7 +68,7 @@
 
                           <div class="p-2 w-full">
                             <div class="relative">
-                              <label for="url" class="leading-7 text-sm text-gray-600">연령</label>
+                              <label for="url" class="leading-7 text-sm text-gray-600">연령 *</label>
                               <select name="age">
                                 <option value="">선택해주세요</option>
                                 <option value="1" {{ old('age') == 1 ? 'selected' : '' }}>19세 미만</option>
@@ -71,7 +83,7 @@
 
                           <div class="p-2 w-full">
                             <div class="relative">
-                              <label for="contact" class="leading-7 text-sm text-gray-600">문의 내용</label>
+                              <label for="contact" class="leading-7 text-sm text-gray-600">질문 내용 *</label>
                               <textarea id="contact" name="contact"  class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out">{{  old('contact') }}</textarea>
                             </div>
                           </div>
@@ -95,3 +107,18 @@
       </div>
   </div>
 </x-app-layout>
+
+<script>
+function showOtherLanguageField() {
+  const languageSelect = document.getElementById('language');
+  const otherLanguageInput = document.getElementById('otherLanguage');
+  if (languageSelect.value === '') {
+      otherLanguageInput.style.display = 'block';
+      otherLanguageInput.name = 'language'; // 이름을 'language'로 변경
+      languageSelect.name = '';
+  } else {
+      otherLanguageInput.style.display = 'none';
+      languageSelect.name = 'language';
+  }
+}
+</script>
