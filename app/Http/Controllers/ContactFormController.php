@@ -17,16 +17,16 @@ class ContactFormController extends Controller
      */
     public function index(Request $request)
     {  
-        
         $search = $request->search;
-        $query = ContactForm::search($search);
+        $search_option = $request->search_option;
+        $query = ContactForm::search($search, $search_option); // 검색 옵션을 전달
         $query->where('solution', 0);
-        // contacts가 desc로 정렬
+        // contacts를 desc로 정렬
         $query->orderBy('created_at', 'desc');
 
         $contacts = $query->select('id', 'name', 'title', 'created_at')
         ->paginate(20);
-        
+
         return view('contacts.index', compact('contacts'));
     }
 
@@ -125,6 +125,7 @@ class ContactFormController extends Controller
     {   
         $contact = ContactForm::find($id);
         $contact->delete();
+        $contact->comments()->delete();
 
         return to_route('contacts.index');
     }
