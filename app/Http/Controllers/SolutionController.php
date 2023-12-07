@@ -17,7 +17,8 @@ class SolutionController extends Controller
     public function index(Request $request)
     {   
         $search = $request->search;
-        $query = ContactForm::search($search);
+        $search_option = $request->search_option;
+        $query = ContactForm::search($search, $search_option); // 검색 옵션을 전달
         $query->where('solution', 1);
         $query->orderBy('created_at', 'desc');
 
@@ -72,11 +73,13 @@ class SolutionController extends Controller
     public function show($id)
     {
         $contact = ContactForm::find($id);
+        $comment = $contact->comments()->first();
+        $commenter = $comment->user()->first();
         $gender = CheckFormService::checkGender($contact);
         $age = CheckFormService::checkAge($contact);
 
         return view('solution.show',
-        compact('contact', 'gender', 'age'));
+        compact('contact', 'gender', 'age', 'comment', 'commenter'));
     }
 
     /**
@@ -110,6 +113,10 @@ class SolutionController extends Controller
      */
     public function destroy($id)
     {   
+        $contact = ContactForm::find($id);
+        $contact->delete();
+        $contact->comments()->delete();
 
+        return to_route('solution.index');
     }
 }
