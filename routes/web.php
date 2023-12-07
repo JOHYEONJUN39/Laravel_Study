@@ -54,9 +54,12 @@ Route::prefix('solution')
     Route::get('/{id}/create', 'create')->name('create');
     Route::post('/', 'store')->name('store');
     Route::get('/{id}', 'show')->name('show');
+    Route::delete('/{id}/destroy', 'destroy')->name('destroy');
 });
 
 Route::post('/contact-forms/{contactForm}/comments', [CommentController::class, 'store']);
+Route::delete('/contact-forms/{contactForm}/comments/{comment}/adopt', [CommentController::class, 'adopt'])->name('comments.adopt');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
