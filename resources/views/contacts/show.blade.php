@@ -11,7 +11,7 @@
             <div class="p-8 space-y-8">
                 <div class="pb-8 border-b border-gray-200 mb-8">
                     <h2 class="text-2xl font-bold">{{ $contact->title }}</h2>
-                    <p class="mt-2 text-sm text-gray-500">{{ $contact->name }}</p>
+                    <p class="mt-2 text-sm text-gray-500">유저명: {{ $contact->name }}</p>
                     <div class="mt-4 text-sm text-gray-500">
                         <p>이메일: {{ $contact->email }}</p>
                         @if($contact->url)
@@ -19,6 +19,7 @@
                         @endif
                         <p>성별: {{ $gender }}</p>
                         <p>연령: {{ $age }}</p>
+                        <p>사용언어: {{ $contact->language }}</p>
                     </div>
                 </div>
                 <div>
@@ -53,7 +54,19 @@
                             <div class="mb-4 rounded-lg p-4 border border-gray-200 bg-blue-100">
                                 <p class="text-xl text-blue-900 font-extrabold">유저명: {{ $comment->user->name }}</p>
                                 <p class="text-lg text-blue-900">{{ $comment->content }}</p>
-                                <p class="text-s">{{ $comment->created_at->format('Y-m-d H:i') }}</p>
+                                <div class="flex justify-between items-end">
+                                    <p class="text-s">{{ $comment->created_at->format('Y-m-d H:i') }}</p>
+                                    @if(auth()->user()->email == $contact->email)
+                                    <form action="/contact-forms/{{ $contact->id }}/comments/{{ $comment->id }}/adopt" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                            class="inline-flex items-center py-2.5 px-4 text- font-medium text-center text-white bg-blue-600 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">
+                                            채택
+                                        </button>
+                                    </form>
+                                    @endif
+                                </div>
                             </div>
                         @endforeach
                     </div>
