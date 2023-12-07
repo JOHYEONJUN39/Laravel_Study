@@ -25,8 +25,30 @@
                           
                           <div class="p-2 w-full">
                             <div class="relative">
-                              <label for="language" class="leading-7 text-sm text-gray-600">사용 언어</label>
-                              <input type="text" id="language" name="language" value="{{ $contact->language }}" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                              <div class="relative">
+                                <label for="language" class="leading-7 text-sm text-gray-600">사용언어 *</label>
+                                <select id="language" name="language" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" onchange="showOtherLanguageField()">
+                                    <option value="JavaScript">JavaScript</option>
+                                    <option value="TypeScript">TypeScript</option>
+                                    <option value="Python">Python</option>
+                                    <option value="Java">Java</option>
+                                    <option value="C#">C#</option>
+                                    <option value="C++">C++</option>
+                                    <option value="PHP">PHP</option>
+                                    <option value="Ruby">Ruby</option>
+                                    <option value="Swift">Swift</option>
+                                    <option value="Kotlin">Kotlin</option>
+                                    <option value="Go">Go</option>
+                                    <option value="Rust">Rust</option>
+                                    <option value="Dart">Dart</option>
+                                    <option value="Objective-C">Objective-C</option>
+                                    <option value="Shell">Shell</option>
+                                    <option value="C">C</option>
+                                    <option value="">기타</option>
+                                </select>
+                                
+                                <input type="text" id="otherLanguage" name="otherLanguage" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" style="display: none;">
+                              </div>
                             </div>
                           </div>
 
@@ -88,3 +110,18 @@
       </div>
   </div>
 </x-app-layout>
+
+<script>
+function showOtherLanguageField() {
+  const languageSelect = document.getElementById('language');
+  const otherLanguageInput = document.getElementById('otherLanguage');
+  if (languageSelect.value === '') {
+      otherLanguageInput.style.display = 'block';
+      otherLanguageInput.name = 'language'; // 이름을 'language'로 변경
+      languageSelect.name = '';
+  } else {
+      otherLanguageInput.style.display = 'none';
+      languageSelect.name = 'language';
+  }
+}
+</script>
