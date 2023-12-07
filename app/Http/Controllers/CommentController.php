@@ -18,4 +18,17 @@ class CommentController extends Controller
         return redirect()->back();
     }
 
+    public function adopt(ContactForm $contactForm, Comment $comment)
+    {
+        $contactForm->comments()->where('id', '!=', $comment->id)->delete();
+        $contact = ContactForm::find($contactForm->id);
+        $contact->solutionist = Comment::find($comment->id)->user->name;
+        $contact->solution = 1;
+        $contact->save();
+
+        return to_route('solution.index');
+    }
+
+
+
 }
