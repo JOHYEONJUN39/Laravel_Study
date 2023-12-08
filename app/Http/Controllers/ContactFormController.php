@@ -25,7 +25,7 @@ class ContactFormController extends Controller
         $query->orderBy('created_at', 'desc');
 
         $contacts = $query->select('id', 'name', 'title', 'created_at')
-        ->paginate(20);
+        ->paginate(10);
 
         return view('contacts.index', compact('contacts'));
     }
